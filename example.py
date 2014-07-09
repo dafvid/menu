@@ -12,8 +12,17 @@ submenu.addItem(TextItem('Above this TextItem is a Spaceitem'))
 def dynMenuFunction(menu,count,kwarg):
   menu.text = "The Count was %s and kwarg was '%s'\n" % (count,kwarg)
   menu.text += "Some appended text"
-  menu.parent = menu #mess up the menus parent, we can't get out!
+  menu.parent = menu #mess up the menus parent, we can't get back!
   
 submenu.addItem(DynMenu('ADynMenu',dynMenuFunction,10,kwarg='ten'))
+
+def searchMenuFunction(menu,searchString):
+  menu.text = "You searched for '%s'" % (searchString)
+  if searchString == 'correct':
+    nextmenu = SubMenu('','Correct Menu',"This is where you end up if you type 'correct'")
+    nextmenu.parent = menu
+    return nextmenu
+  
+menu.addItem(SearchMenu('SearchMenu',searchMenuFunction))
 
 menu.run()

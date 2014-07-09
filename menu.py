@@ -30,7 +30,7 @@ class SubMenu(MenuItem):
     self.items.append(SpaceItem())
     
   def addItem(self,item,key=None):
-    if not hasattr(item,'parent'): item.parent = self
+    if not hasattr(item,'parent') or not item.parent: item.parent = self
     if item.type == 'other':
       self.items.append(item) 
     elif key:
@@ -84,10 +84,12 @@ class Menu(object):
       else:
         print("%s: [%s]" % (item.key,item.label))
     
-    if(self.menu.parent is not None):
-      print("\n-: [Back]")
-    else:
-      print()
+    print()
+    if self.menu.parent is not None:
+      print("-: [Back]")
+    if type(self.menu) is DynMenu:
+      print("u: [Update]")
+    
     print("0: [Home]")
     print("q: [Quit]")
   
@@ -103,6 +105,12 @@ class Menu(object):
       return
     elif ans == '-':
       self.menu = self.menu.parent
+      return
+    elif ans=='u' and type(self.menu) is DynMenu:
+      menu = self.menu
+      menu.clearItems()
+      menu.init(menu,*menu.args,**menu.kwargs)
+      self.menu = menu
       return
     
     if type(self.menu) is SearchMenu:
