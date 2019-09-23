@@ -1,4 +1,8 @@
 __pychache__/*
+.idea/*
+build/*
+dist/*
+menu.egg-info/*
 *.pyc
 *.zip
 *.bat
